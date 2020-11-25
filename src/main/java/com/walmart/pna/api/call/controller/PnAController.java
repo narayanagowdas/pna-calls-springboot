@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.reactive.function.client.WebClient;
 
 @Slf4j
 @RestController
@@ -18,8 +17,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Api(tags = "PnA Controller")
 public class PnAController {
 
-  @Autowired WebClient webClient;
   @Autowired PnAService pnAService;
+  //  @Autowired
+  //  PnACallScheduledService pnACallScheduledService;
 
   @PostMapping("/product/offerDetails")
   public void callPnAWithFsaAndSkuFile(
@@ -27,10 +27,14 @@ public class PnAController {
       @RequestPart(required = true) MultipartFile sku,
       @RequestPart(required = true) MultipartFile fsa,
       @RequestParam(value = "refreshCache", required = false, defaultValue = "false")
-          boolean refreshCache,
-      @RequestParam(value = "metricsEnabled", required = false, defaultValue = "false")
-          boolean metricsEnabled) {
+          boolean refreshCache) {
 
-    pnAService.callPnAapi(sku, fsa, refreshCache, metricsEnabled);
+    pnAService.callPnA(sku, fsa, refreshCache);
   }
+  //
+  //  @GetMapping("/test/file")
+  //  public void test1() {
+  //    pnACallScheduledService.dataSetup();
+  //    pnACallScheduledService.callPnA();
+  //  }
 }
